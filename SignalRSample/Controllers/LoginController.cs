@@ -35,7 +35,8 @@ namespace SignalRSample.Controllers
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Email, model.email),
-                    new Claim(ClaimTypes.Name, user.ID.ToString())
+                    new Claim(ClaimTypes.Sid, user.ID.ToString()),
+                    new Claim(ClaimTypes.Name, user.UserName)
 
                 };
 

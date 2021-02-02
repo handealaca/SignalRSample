@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SignalRSample.Models.ORM.Context;
 
 namespace SignalRSample.Migrations
 {
     [DbContext(typeof(ChatContext))]
-    partial class ChatContextModelSnapshot : ModelSnapshot
+    [Migration("20210202204712_UsernNameColumnAdded")]
+    partial class UsernNameColumnAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,8 +33,8 @@ namespace SignalRSample.Migrations
                     b.Property<string>("EMail")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("OnlineStatus")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("OnlineStatus")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");

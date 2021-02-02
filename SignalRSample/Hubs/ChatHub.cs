@@ -22,8 +22,8 @@ namespace SignalRSample.Hubs
 
         public async Task SendMessage(string message)
         {
-            string msg = message.Trim();
-            await Clients.All.SendAsync("ReceiveMessage", msg);
+            //string msg = message.Trim();
+            await Clients.All.SendAsync("ReceiveMessage", message);
 
             //await Clients.Client("asdasdasd").SendAsync("ReceiveMessage", msg);
         }

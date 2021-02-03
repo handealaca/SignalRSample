@@ -7,33 +7,33 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
+
+    <link href="~/css/Chatpage.css" rel="stylesheet" />
+    <link href='https://fonts.googleapis.com/css?family=source+sans+pro:400,600,700,300' rel='stylesheet'>
     @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">*@
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     @*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>*@
-    <script src="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type='text/css'></script>
 
-    <link href="/css/StyleSheet.css" rel="stylesheet" type="text/css" />
 
     @*<script src="~/css/StyleSheet.css"></script>*@
 
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
 
-
-    <link href='https://fonts.googleapis.com/css?family=source+sans+pro:400,600,700,300' rel='stylesheet' type='text/css'>
-
     <script src="https://use.typekit.net/hoy3lrg.js"></script>
     <script>try { typekit.load({ async: true }); } catch (e) { }</script>
-    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'>
-    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
+
     <style class="cp-pen-styles">
     </style>
     <style>
-        .body {
+           .body {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -54,7 +54,6 @@
 
 
 <body class="body">
-
 
     <div id="frame">
         <div id="sidepanel">
@@ -81,48 +80,52 @@
                 <ul>
                     @foreach (var item in Model)
                     {
-                        <li class="contact">
-                            <div class="wrap">
-                                @if (item.OnlineStatus == "online")
-                                {
-                                    <span class="contact-status online"></span>
-                                }
+                        @if (item.ID.ToString() != ViewBag.UserId)
+                        {
+                            <li class="contact" id="@item.ID">
+                                <div class="wrap">
+                                    @if (item.OnlineStatus == "online")
+                                    {
+                                        <span class="contact-status online"></span>
+                                    }
 
-                                @if (item.OnlineStatus == "away")
-                                {
-                                    <span class="contact-status away"></span>
+                                    @if (item.OnlineStatus == "away")
+                                    {
+                                        <span class="contact-status away"></span>
 
-                                }
+                                    }
 
-                                @if (item.OnlineStatus == "busy")
-                                {
-                                    <span class="contact-status busy"></span>
-                                }
+                                    @if (item.OnlineStatus == "busy")
+                                    {
+                                        <span class="contact-status busy"></span>
+                                    }
 
-                                @if (item.OnlineStatus == "offline")
-                                {
-                                    <span class="contact-status offline"></span>
-                                }
+                                    @if (item.OnlineStatus == "offline")
+                                    {
+                                        <span class="contact-status offline"></span>
+                                    }
 
-                                <img src="http://emilcarlsson.se/assets/louislitt.png" alt="" />
-                                <div class="meta">
-                                    <p class="name">@item.UserName</p>
-                                    @*<p class="preview">You just got LITT up, Mike.</p>*@
+                                    <img src="http://emilcarlsson.se/assets/louislitt.png" alt="" />
+                                    <div class="meta">
+                                        <p class="name">@item.UserName</p>
+                                        @*<p class="preview">You just got LITT up, Mike.</p>*@
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
+                            </li>
+
+                        }
                     }
 
                     @*<li class="contact active">
-                            <div class="wrap">
-                                <span class="contact-status busy"></span>
-                                <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-                                <div class="meta">
-                                    <p class="name">Harvey Specter</p>
-                                    <p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
-                                </div>
-                            </div>
-                        </li>*@
+            <div class="wrap">
+                <span class="contact-status busy"></span>
+                <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+                <div class="meta">
+                    <p class="name">Harvey Specter</p>
+                    <p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
+                </div>
+            </div>
+        </li>*@
 
 
                 </ul>
@@ -213,7 +216,21 @@
                 $("#profile-img").removeClass();
             };
             $("#status-options").removeClass("active");
+
+            var status = $(this).attr('id');
+            
+
+            connection.invoke("ChangeStatus", status).catch(function (err) {
+
+            });
+            console.log(status);
         });
+
+        connection.on("UserStatus", function (userstatus, connectuserid) {
+            console.log(userstatus);
+            $("#" + connectuserid + " span").addClass(userstatus);
+        })
+
         //function newMessage() {
         //    message = $(".message-input input").val();
         //    if ($.trim(message) == '') {
@@ -284,7 +301,9 @@
     });
 // event.preventDefault();
 
-
+    connection.on("Onlineuser", function (userid) {
+        $("#" + userid + " .dot").css("background-color", "green")
+    })
 
 </script>
 

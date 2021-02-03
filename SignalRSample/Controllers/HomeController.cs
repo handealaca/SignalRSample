@@ -18,7 +18,8 @@ namespace SignalRSample.Controllers
         }
         public IActionResult Index()
         {
-            //ViewBag.UserName = HttpContext.User.Claims.ToArray()[2].Value;
+            ViewBag.UserName = HttpContext.User.Claims.ToArray()[2].Value;
+            ViewBag.UserId = HttpContext.User.Claims.ToArray()[1].Value;
             List<AdminUser> users = _chatcontext.AdminUsers.ToList();
 
             return View(users);

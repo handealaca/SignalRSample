@@ -50,7 +50,7 @@ namespace SignalRSample
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("default", "{Controller=Home}/{Action=Index}/{id?}");
+                endpoints.MapControllerRoute("default", "{Controller=Login}/{Action=Login}/{id?}");
                 endpoints.MapHub<ChatHub>("/chathub");
             });
         }
